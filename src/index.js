@@ -1,13 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
 import * as serviceWorker from './serviceWorker';
 
+function Welcome(props) {
+  return <h1>Bonjour, { props.name } </h1>
+}
+
+const element = <Welcome name="Sara" />
+
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  element,
   document.getElementById('root')
 );
 
@@ -15,3 +18,6 @@ ReactDOM.render(
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
+
+//TODO: Test async calls of setState() and childs with props. button increase
+//TODO button parent that change sum
