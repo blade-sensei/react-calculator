@@ -3,11 +3,69 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
 
-function Welcome(props) {
-  return <h1>Bonjour, { props.name } </h1>
+class Counter extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = { increment: 1 };
+    this.onClick = this.onClick.bind(this);
+    
+  }
+  render() {
+    return (
+      <div>
+        <div> increate counter: { this.state.increment } </div>
+        <button onClick={this.onClick} > Counter </button>
+        <Welcome increased={this.state.increment} />
+      </div>
+    );
+
+  }
+
+  onClick() {
+    setTimeout(() => {
+      this.setState({
+        increment: this.state.increment + 1,
+      })
+    }, 2000);
+  }
+}
+class Welcome extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { counter: 10 };
+
+    this.onClick = this.onClick.bind(this);
+    this.onClickBeffore = this.onClickBeffore.bind(this);
+  }
+
+  render() {
+    return (
+      <div>
+        <h1>Bonjour, { this.props.name } </h1>
+        <div> counter: { this.state.counter } </div>
+        <div> increased: { this.props.increased } </div>
+        <div> total: { this.state.counter + this.props.increased} </div>
+        <button onClick={this.onClick} > Counter </button>
+        <button onClick={this.onClickBeffore} > Before </button>
+      </div>
+    );
+
+  }
+
+  onClick() {
+      this.setState((prev, props) => {
+        return {
+        counter: props.increased + prev.counter,
+      }});
+  }
+
+  onClickBeffore() {
+    this.setState({ counter: 5 })
+  }
+
 }
 
-const element = <Welcome name="Sara" />
+const element = <Counter/>
 
 ReactDOM.render(
   element,
