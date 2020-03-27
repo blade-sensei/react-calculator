@@ -4,9 +4,9 @@ class CalculatorButton extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      type: 'number',
+      type: this.props.type,
       color: 'red',
-      value: '1',
+      value: this.props.value,
     }
     this.onButtonClick = this.onButtonClick.bind(this);
   }
