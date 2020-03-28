@@ -5,7 +5,7 @@ class Calculator {
 
     while (result.length !== 1) {
 
-      const terms = this.getTerms(result)
+      const terms = this.getTerms(result) 
       let resultCalcul = this.calculation(terms.operands, terms.operator);
       resultCalcul = resultCalcul.toString();
       const deltaDeleteIndex = (terms.limitIndexes.end - terms.limitIndexes.start) + 1;

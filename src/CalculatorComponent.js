@@ -1,11 +1,13 @@
 import React from 'react';
 import CalculatorButton from './CalculatorButton';
+import Calculator from './calculator';
 
 class CalculatorComponent extends React.Component {
   constructor(props) {
     super(props);
+    this.calculator = new Calculator();
     this.state = {
-      calculationExpression: ''
+      calculationExpression: '',
     }
     this.lastUserInput = this.lastUserInput.bind(this);
     this.handleUserInput = this.handleUserInput.bind(this);
@@ -31,6 +33,10 @@ class CalculatorComponent extends React.Component {
         })
       }
     } else if (type === 'result') {
+      const normalizeExpression = this.state.calculationExpression.replace('x', '*');
+      let result = this.calculator.calculationExpression(normalizeExpression);
+      result = result.toString()
+      this.setState({ calculationExpression: result });
       //ask for result
     }
   }
