@@ -17,9 +17,16 @@ class CalculatorComponent extends React.Component {
     const { type, value } = userInputButton;
     const lastUserInput = this.lastUserInput();
     if (type === 'number') {
-      this.setState({
-        calculationExpression: this.state.calculationExpression + value,
-      })
+      if (this.state.calculationExpression === '0') {
+        this.setState({
+          calculationExpression: value,
+        })
+       
+      } else {
+        this.setState({
+          calculationExpression: this.state.calculationExpression + value,
+        })
+      }
     } else if (type === 'operator') {
       if (lastUserInput.type === 'number') {
         this.setState({
@@ -33,9 +40,7 @@ class CalculatorComponent extends React.Component {
         })
       }
     } else if (type === 'clear') {
-      
       this.clear(value);
-
     } else if (type === 'result') {
       const normalizedExpression = this.state.calculationExpression.replace('x', '*');
       let result = this.calculator.calculationExpression(normalizedExpression);
@@ -82,6 +87,7 @@ class CalculatorComponent extends React.Component {
       { this.state.calculationExpression }
       <CalculatorButton value='AC' type='clear' onUserInput={this.handleUserInput} />
       <CalculatorButton value='C' type='clear' onUserInput={this.handleUserInput} />
+      <CalculatorButton value='0' type='number' onUserInput={this.handleUserInput} />
       <CalculatorButton value='1' type='number' onUserInput={this.handleUserInput} />
       <CalculatorButton value='2' type='number' onUserInput={this.handleUserInput} />
       <CalculatorButton value='3' type='number' onUserInput={this.handleUserInput} />
