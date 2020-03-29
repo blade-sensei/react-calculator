@@ -21,7 +21,6 @@ class CalculatorComponent extends React.Component {
         this.setState({
           calculationExpression: value,
         })
-       
       } else {
         this.setState({
           calculationExpression: this.state.calculationExpression + value,
@@ -35,18 +34,57 @@ class CalculatorComponent extends React.Component {
       }
     } else if (type === 'separator') {
       if (lastUserInput.type === 'number') {
-        this.setState({
-          calculationExpression: this.state.calculationExpression + value,
-        })
+        const fullNumber = this.getFullNumber();
+        if (Number.isInteger(fullNumber)) {
+          this.setState({
+            calculationExpression: this.state.calculationExpression + value,
+          })
+        }
       }
     } else if (type === 'clear') {
       this.clear(value);
     } else if (type === 'result') {
-      const normalizedExpression = this.state.calculationExpression.replace('x', '*');
+
+      const normalizedExpression = this.normalizeToCalculation(this.state.calculationExpression);
       let result = this.calculator.calculationExpression(normalizedExpression);
       result = result.toString()
+      result = this.normalizeToDisplay(result);
       this.setState({ calculationExpression: result });
     }
+  }
+  
+  normalizeToCalculation(expression) {
+    let expressionNormalized = expression;
+    const regexMultiply = /x/gi;
+    const regexSeparator = /,/gi;
+    expressionNormalized = expressionNormalized.replace(regexMultiply, '*');
+    expressionNormalized = expressionNormalized.replace(regexSeparator, '.');
+    return expressionNormalized;
+  }
+
+  normalizeToDisplay(expression) {
+    let expressionNormalized = expression;
+    expressionNormalized = expressionNormalized.replace('.', ',');
+    return expressionNormalized;
+  }
+
+  getFullNumber() {
+    const expression = this.state.calculationExpression.split('');
+    const start = expression.length - 1
+    let indexEnd = 0;
+    for (let endIndex = start; endIndex >= 0; endIndex--) {
+      const term = expression[endIndex];
+      if (this.isOperator(term)) {
+        indexEnd  = endIndex + 1;
+        break;
+      }
+    }
+    let number = expression.slice(indexEnd, start + 1);
+    number = number.join('');
+    number = number.replace(',', '.');
+    number = Number(number);
+
+    return number
   }
 
   clear(typeOfClear) {
@@ -57,6 +95,16 @@ class CalculatorComponent extends React.Component {
     this.setState({
       calculationExpression: removeLastEntry
     })
+  }
+
+
+  isOperator(term) {
+    return  (
+      term === '+' ||
+      term === '-' ||
+      term === '*' ||
+      term === '/'
+    )
   }
 
   lastUserInput() {
@@ -87,6 +135,7 @@ class CalculatorComponent extends React.Component {
       { this.state.calculationExpression }
       <CalculatorButton value='AC' type='clear' onUserInput={this.handleUserInput} />
       <CalculatorButton value='C' type='clear' onUserInput={this.handleUserInput} />
+      <CalculatorButton value=',' type='separator' onUserInput={this.handleUserInput} />
       <CalculatorButton value='0' type='number' onUserInput={this.handleUserInput} />
       <CalculatorButton value='1' type='number' onUserInput={this.handleUserInput} />
       <CalculatorButton value='2' type='number' onUserInput={this.handleUserInput} />
