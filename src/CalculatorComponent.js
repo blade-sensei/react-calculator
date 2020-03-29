@@ -1,13 +1,15 @@
 import React from 'react';
 import CalculatorButton from './CalculatorButton';
+import CalculatorDisplayer from './CalculatorDisplayer';
 import Calculator from './calculator';
+import './CalculatorComponent.css';
 
 class CalculatorComponent extends React.Component {
   constructor(props) {
     super(props);
     this.calculator = new Calculator();
     this.state = {
-      calculationExpression: '',
+      calculationExpression: '0',
     }
     this.lastUserInput = this.lastUserInput.bind(this);
     this.handleUserInput = this.handleUserInput.bind(this);
@@ -131,26 +133,47 @@ class CalculatorComponent extends React.Component {
 
   render() {
     return (
-      <div>
-      { this.state.calculationExpression }
-      <CalculatorButton value='AC' type='clear' onUserInput={this.handleUserInput} />
-      <CalculatorButton value='C' type='clear' onUserInput={this.handleUserInput} />
-      <CalculatorButton value=',' type='separator' onUserInput={this.handleUserInput} />
-      <CalculatorButton value='0' type='number' onUserInput={this.handleUserInput} />
-      <CalculatorButton value='1' type='number' onUserInput={this.handleUserInput} />
-      <CalculatorButton value='2' type='number' onUserInput={this.handleUserInput} />
-      <CalculatorButton value='3' type='number' onUserInput={this.handleUserInput} />
-      <CalculatorButton value='4' type='number' onUserInput={this.handleUserInput} />
-      <CalculatorButton value='5' type='number' onUserInput={this.handleUserInput} />
-      <CalculatorButton value='6' type='number' onUserInput={this.handleUserInput} />
-      <CalculatorButton value='7' type='number' onUserInput={this.handleUserInput} />
-      <CalculatorButton value='8' type='number' onUserInput={this.handleUserInput} />
-      <CalculatorButton value='9' type='number' onUserInput={this.handleUserInput} />
-      <CalculatorButton value='+' type='operator' onUserInput={this.handleUserInput} />
-      <CalculatorButton value='-' type='operator' onUserInput={this.handleUserInput} />
-      <CalculatorButton value='x' type='operator' onUserInput={this.handleUserInput} />
-      <CalculatorButton value='/' type='operator' onUserInput={this.handleUserInput} />
-      <CalculatorButton value='=' type='result' onUserInput={this.handleUserInput} />
+      <div className="calculator">
+      <div className="displayer-container">
+        <CalculatorDisplayer expression={this.state.calculationExpression} />  
+      </div>
+      <div className="inputs-container">
+        <div className="row">
+          <CalculatorButton value='AC' type='clear' onUserInput={this.handleUserInput} />
+          <CalculatorButton value='' type='disabled' onUserInput={this.handleUserInput} />
+          <CalculatorButton value='C' type='clear' onUserInput={this.handleUserInput} />
+          <CalculatorButton value='/' type='operator' onUserInput={this.handleUserInput} />
+        </div>
+        <div className="row">
+          <CalculatorButton value='7' type='number' onUserInput={this.handleUserInput} />
+          <CalculatorButton value='8' type='number' onUserInput={this.handleUserInput} />
+          <CalculatorButton value='9' type='number' onUserInput={this.handleUserInput} />
+          <CalculatorButton value='x' type='operator' onUserInput={this.handleUserInput} />
+        </div>
+        <div className="row">
+        <CalculatorButton value='4' type='number' onUserInput={this.handleUserInput} />
+        <CalculatorButton value='5' type='number' onUserInput={this.handleUserInput} />
+        <CalculatorButton value='6' type='number' onUserInput={this.handleUserInput} />
+        <CalculatorButton value='-' type='operator' onUserInput={this.handleUserInput} />
+        
+        </div>
+
+        <div className="row">
+        <CalculatorButton value='1' type='number' onUserInput={this.handleUserInput} />
+        <CalculatorButton value='2' type='number' onUserInput={this.handleUserInput} />
+        <CalculatorButton value='3' type='number' onUserInput={this.handleUserInput} />
+        
+        
+        <CalculatorButton value='+' type='operator' onUserInput={this.handleUserInput} /> 
+        </div>
+
+        <div className="row">
+        <CalculatorButton value='0' type='number' onUserInput={this.handleUserInput} />
+        <CalculatorButton value=',' type='separator' onUserInput={this.handleUserInput} />
+        <CalculatorButton value='=' type='result' onUserInput={this.handleUserInput}/>
+        </div>
+        
+      </div>
       </div>
     )
   }

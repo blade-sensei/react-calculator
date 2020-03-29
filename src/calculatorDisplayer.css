@@ -1,0 +1,18 @@
+.displayer {
+  background-color: rgb(27,17,157);
+  height: 70px;
+  color: white;
+  font-weight: 500;
+  font-size: 19px;;
+  display: table;
+  width: 100%;
+  outline: solid black 1px;
+
+}
+
+.displayer-text {
+  vertical-align: middle;
+  padding-right: 10px;
+  display: table-cell;
+  text-align: right;
+}

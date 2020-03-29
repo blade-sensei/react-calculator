@@ -1,4 +1,5 @@
 import React from 'react';
+import './CalculatorButton.css'
 
 class CalculatorButton extends React.Component {
   constructor(props) {
@@ -12,13 +13,30 @@ class CalculatorButton extends React.Component {
   }
 
   render() {
+    const className = this.getClassName();
+
     return (
-    <button onClick={ this.onButtonClick }> { this.state.value } </button>
+    <button onClick={ this.onButtonClick }  className={ className }> { this.state.value } </button>
     )
   }
 
   onButtonClick() {
     this.props.onUserInput(this.state);
+  }
+
+  isZeroButton() {
+    return (this.state.value === '0');
+  }
+
+  getClassName () {
+    let className = this.state.type;
+    if (this.isZeroButton()) {
+      className = `${className} zero`
+    } else if (this.state.value === '/') {
+      className = `${className} divide`;
+    }
+    return className;
+
   }
 }
 

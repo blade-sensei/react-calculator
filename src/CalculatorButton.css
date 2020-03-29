@@ -1,0 +1,27 @@
+button {
+  width: 70px;
+  height: 70px;
+  font-weight: 500;
+  font-size: 19px;
+  color: white;
+  background-color: rgb(27,17,157);
+  vertical-align: top;
+  border: none;
+  outline: solid black 1px;
+}
+
+.operator, .result {
+  background: linear-gradient(to right,rgb(27,17,157) 20%, rgb(244,74,172))
+}
+
+.clear, .disabled {
+  background: linear-gradient(to top,rgb(27,17,157) 20%, rgb(244,74,172))
+}
+
+.zero {
+  width: 140px;
+}
+
+.divide {
+  background: linear-gradient(40deg, rgb(27,17,157) 10%, 40%, rgb(244,74,172))
+}
