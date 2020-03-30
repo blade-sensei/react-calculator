@@ -36,7 +36,7 @@ class CalculatorComponent extends React.Component {
 
       case 'separator':
         if (lastUserInput.type === 'number') {
-          const lastNumber = this.getLastNumberOfExpression();
+          const lastNumber = this.getLastNumberInExpression();
           if (!this.isFloat(lastNumber)) {
             this.append(value);
           }
@@ -85,18 +85,18 @@ class CalculatorComponent extends React.Component {
     return expressionNormalized;
   }
 
-  getLastNumberOfExpression() {
+  getLastNumberInExpression() {
     const expression = this.state.calculationExpression.split('');
-    const start = expression.length - 1
-    let indexEnd = 0;
-    for (let endIndex = start; endIndex >= 0; endIndex--) {
-      const term = expression[endIndex];
+    const rightLimit = expression.length;
+    let leftLimit = 0;
+    for (let termIndex = rightLimit; termIndex >= 0; termIndex--) {
+      const term = expression[termIndex];
       if (this.isOperator(term)) {
-        indexEnd  = endIndex + 1;
+        leftLimit  = termIndex + 1;
         break;
       }
     }
-    let number = expression.slice(indexEnd, start + 1);
+    const number = expression.slice(leftLimit, rightLimit + 1);
     return number.join('');
   }
 
