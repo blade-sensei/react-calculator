@@ -4,6 +4,22 @@ import CalculatorDisplayer from './CalculatorDisplayer';
 import Calculator from '../services/calculator';
 import './Calculator.css';
 
+const OPERATORS = {
+  DIVISION: '',
+  MULTIPLICATION: '*',
+  SUBTRACTION: '-',
+  ADDITION: '+',
+}
+
+const INPUTS_TYPES = {
+  NUMBER: 'number',
+  OPERATOR: 'operator',
+  SEPARATOR: 'separator',
+  CLEAR: 'clear',
+  CLEAR_ALL: 'AC',
+  CLEAR_LAST: 'C',
+  RESULT: 'result'
+}
 class CalculatorComponent extends React.Component {
   constructor(props) {
     super(props);
@@ -14,12 +30,13 @@ class CalculatorComponent extends React.Component {
     this.handleUserInput = this.handleUserInput.bind(this);
   }
 
+
   handleUserInput(userInput) {
     const { type, value } = userInput;
     const lastUserInput = this.lastUserInput();
 
     switch(type) {
-      case 'number':
+      case INPUTS_TYPES.NUMBER:
         if (this.state.calculationExpression === '0') {
           return this.setState({
           calculationExpression: value,
@@ -28,14 +45,14 @@ class CalculatorComponent extends React.Component {
         this.append(value);
         break;
 
-      case 'operator': 
-        if (lastUserInput.type === 'number') {
+      case INPUTS_TYPES.OPERATOR: 
+        if (lastUserInput.type === INPUTS_TYPES.NUMBER) {
           this.append(value);
         }
         break;
 
-      case 'separator':
-        if (lastUserInput.type === 'number') {
+      case INPUTS_TYPES.SEPARATOR:
+        if (lastUserInput.type === INPUTS_TYPES.NUMBER) {
           const lastNumber = this.getLastNumberInExpression();
           if (!this.isFloat(lastNumber)) {
             this.append(value);
@@ -43,11 +60,11 @@ class CalculatorComponent extends React.Component {
         }
         break;
 
-      case 'clear':
+      case INPUTS_TYPES.CLEAR:
         this.clearExpression(value);
         break;
 
-      case 'result': 
+      case INPUTS_TYPES.RESULT: 
         const normalizedExpression = this.normalizeToCalculation(this.state.calculationExpression);
         let result = this.calculator.calculationExpression(normalizedExpression);
         result = result.toString();
@@ -101,13 +118,13 @@ class CalculatorComponent extends React.Component {
   }
 
   clearExpression(typeOfClear) {
-    if (typeOfClear === 'AC') {
+    if (typeOfClear === INPUTS_TYPES.CLEAR_ALL) {
       return this.resetExpression();
     } 
-    return this.removeLastUserEntry();
+    return this.removeLastUserInput();
   }
 
-  removeLastUserEntry() {
+  removeLastUserInput() {
     this.setState({
       calculationExpression: this.state.calculationExpression.slice(0, -1)
     })
@@ -118,29 +135,20 @@ class CalculatorComponent extends React.Component {
   }
 
   isOperator(term) {
-    return  (
-      term === '+' ||
-      term === '-' ||
-      term === '*' ||
-      term === '/'
-    )
+    const operators = OPERATORS.values();
+    return operators.includes(term);
   }
 
   lastUserInput() {
     const lastInput = this.state.calculationExpression.slice(-1);
-    let type = 'null';
-    if (!lastInput) {
-      return {
-        type,
-        lastInput,
-      }
-    } 
+    let type = '';
+    if (!lastInput) return { type, lastInput } 
     if (!isNaN(Number(lastInput))) {
-      type = 'number'
+      type = INPUTS_TYPES.NUMBER
     } else if (lastInput === ',') {
-      type = 'separator';
+      type = INPUTS_TYPES.SEPARATOR;
     } else {
-      type = 'operator';
+      type = INPUTS_TYPES.OPERATOR;
     } 
     return {
       type,
