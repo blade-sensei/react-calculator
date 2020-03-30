@@ -1,8 +1,8 @@
 import React from 'react';
 import CalculatorButton from './CalculatorButton';
 import CalculatorDisplayer from './CalculatorDisplayer';
-import Calculator from './calculator';
-import './CalculatorComponent.css';
+import Calculator from '../services/calculator';
+import './Calculator.css';
 
 class CalculatorComponent extends React.Component {
   constructor(props) {

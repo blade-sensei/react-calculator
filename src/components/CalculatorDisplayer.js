@@ -1,7 +1,8 @@
 import React from 'react';
-import './calculatorDisplayer.css'
+import './CalculatorDisplayer.css'
 
 class CalculatorDisplayer extends React.Component {
+  // eslint-disable-next-line no-useless-constructor
   constructor(props) {
     super(props);
   }
