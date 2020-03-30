@@ -9,7 +9,7 @@ class CalculatorDisplayer extends React.Component {
   render() {
     return (
       <div className="displayer">
-        <span class="displayer-text">
+        <span className="displayer-text">
           { this.props.expression }
         </span>
       </div>
