@@ -120,7 +120,7 @@ class CalculatorComponent extends React.Component {
   }
 
   isOperator(term) {
-    return operators.values().includes(term);
+    return Object.values(operators).includes(term)
   }
 
   lastUserInput() {

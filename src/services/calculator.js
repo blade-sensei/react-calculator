@@ -1,11 +1,10 @@
+import { operators } from '../constants';
 class Calculator {
 
   calculationExpression(calculExpression) {
     let result = calculExpression.split('');
-
-    while (result.length !== 1) {
-
-      const terms = this.getTerms(result)
+    while (!this.isLastResult(result)) {
+      const terms = this.priorityOperationTerms(result)
       let resultCalcul = this.calculation(terms.operands, terms.operator);
       resultCalcul = resultCalcul.toString();
       const deltaDeleteIndex = (terms.limitIndexes.end - terms.limitIndexes.start) + 1;
@@ -15,39 +14,45 @@ class Calculator {
     return Number(result[0]);
   }
 
+  isLastResult(expression) {
+    return expression.length === 1;
+  }
+
   calculation(operands, operator) {
     const [firstOperand, secondOperand] = operands;
-    if (operator === '*') {
+    if (operator === operators.MULTIPLICATION) {
       return this.multiplication(firstOperand, secondOperand);
-    } else if (operator === '/') {
+    } else if (operator === operators.DIVISION) {
       return this.division(firstOperand, secondOperand);
-    } else if (operator === '+') {
+    } else if (operator === operators.ADDITION) {
       return this.addition(firstOperand, secondOperand);
     } 
     return this.subtraction(firstOperand, secondOperand);
   }
 
-  getTerms(expression) {
+  //return limitIndexes to know where to replace in 
+  //current string expressionn, priority operation by futur priority result
+  priorityOperationTerms(expression) {
     let firstOperatorFound = false;
-    let indexOperator;
+    let indexPriorityOperator;
     let operands = [];
 
     for (let [index, term] of expression.entries()) {
       if (this.isOperator(term)) {
         if (this.isPriorityOperator(term)) {
-          indexOperator = index;
+          indexPriorityOperator = index;
           break;
-        } else if (!firstOperatorFound) {
-          indexOperator = index;
+        } if (!firstOperatorFound) {
+          indexPriorityOperator = index;
           firstOperatorFound = true;
         }
       }
     }
-    const [operandLeft, operandLeftIndex ] = this.getLeftOperand(expression, indexOperator);
-    const [operandRight, operandRightIndex]  = this.getRightOperand(expression, indexOperator);
+    const [operandLeft, operandLeftIndex ] = this.getLeftOperand(expression, indexPriorityOperator);
+    const [operandRight, operandRightIndex]  = this.getRightOperand(expression, indexPriorityOperator);
     operands = [operandLeft, operandRight];
     const terms = {
-      operator: expression[indexOperator],
+      operator: expression[indexPriorityOperator],
       operands,
       limitIndexes: {
         start: operandLeftIndex,
@@ -59,48 +64,45 @@ class Calculator {
   }
 
   getRightOperand(expression, index) {
-    let indexEnd = expression.length;
-    let indexStart = index + 1;
-    for (let endIndex = indexStart; endIndex < expression.length; endIndex++) {
+    let rightLimit = expression.length;
+    let leftLimit = index + 1;
+    for (let endIndex = leftLimit; endIndex < expression.length; endIndex++) {
       const term = expression[endIndex];
       if (this.isOperator(term)) {
-        indexEnd  = endIndex;
+        rightLimit  = endIndex;
         break;
       }
     }
-    let number = expression.slice(indexStart, indexEnd);
+    let number = expression.slice(leftLimit, rightLimit);
     number = number.join('');
     number = Number(number);
-    return [number, indexEnd - 1]
+    return [number, rightLimit - 1]
   }
 
   getLeftOperand(expression, index) {
-    let indexEnd = 0;
+    let leftLimit = 0;
     for (let endIndex = index - 1; endIndex >= 0; endIndex--) {
       const term = expression[endIndex];
       if (this.isOperator(term)) {
-        indexEnd  = endIndex + 1;
+        leftLimit  = endIndex + 1;
         break;
       }
     }
-    let number = expression.slice(indexEnd, index);
+    let number = expression.slice(leftLimit, index);
     number = number.join('');
     number = Number(number);
-
-    return [number, indexEnd]
+    return [number, leftLimit]
   }
 
   isPriorityOperator(operator) {
-    return (operator === '*' || operator === '/');
+    return (
+      operator ===  operators.MULTIPLICATION ||
+      operator === operators.DIVISION
+    );
   }
 
   isOperator(term) {
-    return  (
-      term === '+' ||
-      term === '-' ||
-      term === '*' ||
-      term === '/'
-    )
+    return Object.values(operators).includes(term)
   }
 
   addition(first, second) {
