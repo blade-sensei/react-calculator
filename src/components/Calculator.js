@@ -11,23 +11,21 @@ class CalculatorComponent extends React.Component {
     this.state = {
       calculationExpression: '0',
     }
-    this.lastUserInput = this.lastUserInput.bind(this);
     this.handleUserInput = this.handleUserInput.bind(this);
   }
 
-  handleUserInput(userInputButton) {
-    const { type, value } = userInputButton;
+  handleUserInput(userInput) {
+    const { type, value } = userInput;
     const lastUserInput = this.lastUserInput();
     if (type === 'number') {
       if (this.state.calculationExpression === '0') {
-        this.setState({
+         return this.setState({
           calculationExpression: value,
-        })
-      } else {
-        this.setState({
-          calculationExpression: this.state.calculationExpression + value,
-        })
+        });
       }
+      this.setState({
+          calculationExpression: this.state.calculationExpression + value,
+      });
     } else if (type === 'operator') {
       if (lastUserInput.type === 'number') {
         this.setState({
@@ -37,7 +35,7 @@ class CalculatorComponent extends React.Component {
     } else if (type === 'separator') {
       if (lastUserInput.type === 'number') {
         const fullNumber = this.getFullNumber();
-        if (Number.isInteger(fullNumber)) {
+        if (!fullNumber.includes(',')) {
           this.setState({
             calculationExpression: this.state.calculationExpression + value,
           })
@@ -82,11 +80,7 @@ class CalculatorComponent extends React.Component {
       }
     }
     let number = expression.slice(indexEnd, start + 1);
-    number = number.join('');
-    number = number.replace(',', '.');
-    number = Number(number);
-
-    return number
+    return number.join('');
   }
 
   clear(typeOfClear) {
