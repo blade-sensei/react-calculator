@@ -85,14 +85,20 @@ class CalculatorComponent extends React.Component {
 
   clear(typeOfClear) {
     if (typeOfClear === 'AC') {
-      return this.setState({ calculationExpression: ''});
+      return this.resetExpression();
     } 
-    const removeLastEntry = this.state.calculationExpression.substr(0, this.state.calculationExpression.length -1);
+    return this.removeLastUserEntry();
+  }
+
+  removeLastUserEntry() {
     this.setState({
-      calculationExpression: removeLastEntry
+      calculationExpression: this.state.calculationExpression.slice(0, -1)
     })
   }
 
+  resetExpression() {
+    this.setState({ calculationExpression: '0'});
+  }
 
   isOperator(term) {
     return  (
