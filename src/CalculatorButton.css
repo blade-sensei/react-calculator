@@ -10,12 +10,29 @@ button {
   outline: solid black 1px;
 }
 
+button:hover {
+  cursor: pointer;
+  background-color: rgb(155, 150, 220);
+}
+
 .operator, .result {
-  background: linear-gradient(to right,rgb(27,17,157) 20%, rgb(244,74,172))
+  background: linear-gradient(to right,rgb(27,17,157) 20%, rgb(231, 0, 135))
+}
+
+.operator:hover, .result:hover {
+  background: linear-gradient(to right,rgb(155, 150, 220) 50%, rgb(231, 0, 135))
 }
 
 .clear, .disabled {
-  background: linear-gradient(to top,rgb(27,17,157) 20%, rgb(244,74,172))
+  background: linear-gradient(to top,rgb(27,17,157) 20%, rgb(231, 0, 135))
+}
+
+.clear:hover, .disabled:hover {
+  background: linear-gradient(to top,rgb(155, 150, 220) 50%, rgb(231, 0, 135))
+}
+
+.disabled:hover {
+  cursor: default;
 }
 
 .zero {
@@ -23,5 +40,9 @@ button {
 }
 
 .divide {
-  background: linear-gradient(40deg, rgb(27,17,157) 10%, 40%, rgb(244,74,172))
+  background: linear-gradient(40deg, rgb(27,17,157) 10%, 35%, rgb(231, 0, 135))
+}
+
+.divide:hover {
+  background: linear-gradient(40deg, rgb(155, 150, 220) 10%, 50%, rgb(231, 0, 135))
 }

@@ -5,6 +5,7 @@ import CalculatorComponent from './CalculatorComponent';
 function App() {
   return (
     <div className="App">
+      <h1> React Calculator</h1>
       <CalculatorComponent/>
     </div>
   );
