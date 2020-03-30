@@ -17,40 +17,57 @@ class CalculatorComponent extends React.Component {
   handleUserInput(userInput) {
     const { type, value } = userInput;
     const lastUserInput = this.lastUserInput();
-    if (type === 'number') {
-      if (this.state.calculationExpression === '0') {
-         return this.setState({
+
+    switch(type) {
+      case 'number':
+        if (this.state.calculationExpression === '0') {
+          return this.setState({
           calculationExpression: value,
         });
-      }
-      this.setState({
-          calculationExpression: this.state.calculationExpression + value,
-      });
-    } else if (type === 'operator') {
-      if (lastUserInput.type === 'number') {
-        this.setState({
-          calculationExpression: this.state.calculationExpression + value,
-        })
-      }
-    } else if (type === 'separator') {
-      if (lastUserInput.type === 'number') {
-        const fullNumber = this.getFullNumber();
-        if (!fullNumber.includes(',')) {
-          this.setState({
-            calculationExpression: this.state.calculationExpression + value,
-          })
         }
-      }
-    } else if (type === 'clear') {
-      this.clear(value);
-    } else if (type === 'result') {
+        this.append(value);
+        break;
 
-      const normalizedExpression = this.normalizeToCalculation(this.state.calculationExpression);
-      let result = this.calculator.calculationExpression(normalizedExpression);
-      result = result.toString()
-      result = this.normalizeToDisplay(result);
-      this.setState({ calculationExpression: result });
+      case 'operator': 
+        if (lastUserInput.type === 'number') {
+          this.append(value);
+        }
+        break;
+
+      case 'separator':
+        if (lastUserInput.type === 'number') {
+          const lastNumber = this.getLastNumberOfExpression();
+          if (!this.isFloat(lastNumber)) {
+            this.append(value);
+          }
+        }
+        break;
+
+      case 'clear':
+        this.clearExpression(value);
+        break;
+
+      case 'result': 
+        const normalizedExpression = this.normalizeToCalculation(this.state.calculationExpression);
+        let result = this.calculator.calculationExpression(normalizedExpression);
+        result = result.toString();
+        result = this.normalizeToDisplay(result);
+        this.setState({ calculationExpression: result });
+        break;
+
+      default:
+        break;
     }
+  }
+
+  append(input) {
+    this.setState({
+      calculationExpression: this.state.calculationExpression + input,
+    });
+  }
+
+  isFloat(stringNumber) {
+    return stringNumber.includes(',');
   }
   
   normalizeToCalculation(expression) {
@@ -68,7 +85,7 @@ class CalculatorComponent extends React.Component {
     return expressionNormalized;
   }
 
-  getFullNumber() {
+  getLastNumberOfExpression() {
     const expression = this.state.calculationExpression.split('');
     const start = expression.length - 1
     let indexEnd = 0;
@@ -83,7 +100,7 @@ class CalculatorComponent extends React.Component {
     return number.join('');
   }
 
-  clear(typeOfClear) {
+  clearExpression(typeOfClear) {
     if (typeOfClear === 'AC') {
       return this.resetExpression();
     } 
