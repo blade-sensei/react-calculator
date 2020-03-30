@@ -6,6 +6,11 @@ Thanks Draw.io
 
 ![](https://i.imgur.com/aIi6Y1y.png)
 
+## Demo
+
+Deployed on firebase host service
+https://calculator-1000.firebaseapp.com/
+
 ## Basic Calculator
 
 - Testing dealing with string expression
