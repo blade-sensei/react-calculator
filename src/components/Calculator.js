@@ -50,11 +50,13 @@ class CalculatorComponent extends React.Component {
         break;
 
       case inputs.RESULT: 
-        const normalizedExpression = this.normalizeToCalculation(this.state.calculationExpression);
-        let result = this.calculator.calculationExpression(normalizedExpression);
-        result = result.toString();
-        result = this.normalizeToDisplay(result);
-        this.setState({ calculationExpression: result });
+        if (this.lastUserInput().type === inputs.NUMBER ) {
+          const normalizedExpression = this.normalizeToCalculation(this.state.calculationExpression);
+          let result = this.calculator.calculationExpression(normalizedExpression);
+          result = result.toString();
+          result = this.normalizeToDisplay(result);
+          this.setState({ calculationExpression: result });
+        }
         break;
 
       default:
