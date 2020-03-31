@@ -9,6 +9,7 @@ Thanks Draw.io
 ## Demo
 
 Deployed on firebase host service
+
 https://calculator-1000.firebaseapp.com/
 
 ## Basic Calculator
@@ -22,4 +23,4 @@ https://calculator-1000.firebaseapp.com/
 - enable +/- sign user inputs
 - keyboard events (already POC but i didn't implemented)
 
-## Feel free to give me your feedbacks ! 
+## Feel free to give me your feedbacks ! :bow:
